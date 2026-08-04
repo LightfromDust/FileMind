@@ -1,0 +1,8 @@
+# Core (semantic search + indexing)
+sentence-transformers>=3.0.0,<6.0.0
+faiss-cpu>=1.8.0
+numpy>=1.26.0
+
+# Optional: file format parsers
+# PyMuPDF>=1.25.0       # PDF support
+# python-docx>=1.1.0    # DOCX support
