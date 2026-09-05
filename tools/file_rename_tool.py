@@ -5,7 +5,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.safety.conflict_checker import ConflictChecker
 from filemind.safety.path_guard import PathGuard
 from filemind.services.rename_service import RenameService
@@ -16,10 +16,10 @@ from filemind.storage.operation_log_repository import OperationLogRepository
 def rename_files_tool(directory: str, dry_run: bool = True) -> dict[str, object]:
     try:
         root = PathGuard().normalize(directory)
-        repo = FileRepository(FileAgentConfig.from_env().db_path)
+        repo = FileRepository(FileMindConfig.from_env().db_path)
         renamer = RenameService()
         conflicts = ConflictChecker()
-        logs = OperationLogRepository(FileAgentConfig.from_env().db_path)
+        logs = OperationLogRepository(FileMindConfig.from_env().db_path)
         plans: list[dict[str, object]] = []
         for item in repo.list_files(directory=root, limit=1000):
             old_path = PathGuard().ensure_allowed(item["file_path"], [root])

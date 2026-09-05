@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.indexer.index_service import IndexService
 from filemind.parser import DEFAULT_PARSERS, BaseParser
 from filemind.scanner.metadata_extractor import MetadataExtractor
@@ -22,7 +22,7 @@ class FileScanner:
 
     def __init__(
         self,
-        config: FileAgentConfig | None = None,
+        config: FileMindConfig | None = None,
         *,
         db_path: str | Path | None = None,
         parsers: list[BaseParser] | None = None,
@@ -31,7 +31,7 @@ class FileScanner:
         llm_client: Any | None = None,
         model: str | None = None,
     ):
-        self.config = config or FileAgentConfig()
+        self.config = config or FileMindConfig()
         if db_path:
             self.config.db_path = Path(db_path).expanduser()
         self.config.ensure_dirs()

@@ -5,7 +5,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.safety.conflict_checker import ConflictChecker
 from filemind.safety.path_guard import PathGuard
 from filemind.storage.file_repository import FileRepository
@@ -17,9 +17,9 @@ def archive_files_tool(source_dir: str, target_root: str, dry_run: bool = True) 
         guard = PathGuard()
         source_root = guard.normalize(source_dir)
         archive_root = guard.normalize(target_root)
-        repo = FileRepository(FileAgentConfig.from_env().db_path)
+        repo = FileRepository(FileMindConfig.from_env().db_path)
         conflicts = ConflictChecker()
-        logs = OperationLogRepository(FileAgentConfig.from_env().db_path)
+        logs = OperationLogRepository(FileMindConfig.from_env().db_path)
         plans: list[dict[str, object]] = []
         for item in repo.list_files(directory=source_root, limit=1000):
             category = str(item.get("category") or "其他文件")

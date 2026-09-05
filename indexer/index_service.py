@@ -5,7 +5,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.indexer.chunker import TextChunker
 from filemind.indexer.embedder import Embedder
 from filemind.indexer.vector_store import VectorStore
@@ -17,11 +17,11 @@ _PARALLEL_EMBED_THRESHOLD = 50
 class IndexService:
     def __init__(
         self,
-        config: FileAgentConfig | None = None,
+        config: FileMindConfig | None = None,
         db_path: str | Path | None = None,
         vector_index_path: str | Path | None = None,
     ):
-        self.config = config or FileAgentConfig()
+        self.config = config or FileMindConfig()
         self.chunker = TextChunker(self.config.chunk_size, self.config.chunk_overlap)
         self.chunks = ChunkRepository(db_path or self.config.db_path)
         self.embedder = Embedder(self.config.embedding_model)

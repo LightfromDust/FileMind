@@ -6,7 +6,7 @@ import asyncio
 from pathlib import Path
 from typing import Any
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.parser import DEFAULT_PARSERS
 from filemind.services.classify_service import ClassifyService
 from filemind.services.summarize_service import SummarizeService
@@ -18,7 +18,7 @@ def summarize_file_tool(
     model: str | None = None,
 ) -> dict[str, object]:
     try:
-        FileAgentConfig.from_env().ensure_dirs()
+        FileMindConfig.from_env().ensure_dirs()
         path = Path(file_path).expanduser().resolve()
         parser = next((item for item in DEFAULT_PARSERS if item.can_parse(str(path))), None)
         if parser is None:

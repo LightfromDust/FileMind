@@ -6,7 +6,7 @@ import asyncio
 import re
 from typing import Any
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.services.search_service import SearchService
 
 _LLM_QA_TIMEOUT = 30
@@ -15,13 +15,13 @@ _LLM_QA_TIMEOUT = 30
 class QAService:
     def __init__(
         self,
-        config: FileAgentConfig | None = None,
+        config: FileMindConfig | None = None,
         *,
         search_service: SearchService | None = None,
         llm_client: Any | None = None,
         model: str | None = None,
     ):
-        self.config = config or FileAgentConfig.from_env()
+        self.config = config or FileMindConfig.from_env()
         self.search_service = search_service or SearchService(self.config)
         self.llm_client = llm_client
         self.model = model

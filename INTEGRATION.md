@@ -100,7 +100,7 @@ class LLMAdapter:
 
 ```python
 from openai import AsyncOpenAI
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.services.qa_service import QAService
 from filemind.services.summarize_service import SummarizeService
 from filemind.services.classify_service import ClassifyService
@@ -114,7 +114,7 @@ llm = LLMAdapter(openai_client, model="gpt-4o")
 result = summarize_file_tool("/path/to/file.pdf", llm_client=llm, model="gpt-4o")
 
 # Or use services directly for more control
-qa = QAService(FileAgentConfig.from_env(), llm_client=llm, model="gpt-4o")
+qa = QAService(FileMindConfig.from_env(), llm_client=llm, model="gpt-4o")
 answer = await qa.answer_question("这份合同的违约金是多少？", top_k=5)
 ```
 
@@ -289,5 +289,5 @@ ArchiveService.plan_target(source_path: str, target_root: str, category: str) ->
 FileScanner(config).scan(directory: str, recursive: bool = True) -> dict  # sync
 
 # Config
-FileAgentConfig.from_env() -> FileAgentConfig
+FileMindConfig.from_env() -> FileMindConfig   # alias: FileAgentConfig
 ```

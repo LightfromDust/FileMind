@@ -6,7 +6,7 @@ import sqlite3
 import threading
 from pathlib import Path
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 
 _db_write_lock = threading.Lock()
 
@@ -16,7 +16,7 @@ def get_write_lock() -> threading.Lock:
 
 
 def get_connection(db_path: str | Path | None = None, check_same_thread: bool = False) -> sqlite3.Connection:
-    path = Path(db_path).expanduser() if db_path else FileAgentConfig().db_path
+    path = Path(db_path).expanduser() if db_path else FileMindConfig().db_path
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path, check_same_thread=check_same_thread)
     conn.row_factory = sqlite3.Row

@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.parser import DEFAULT_PARSERS
 from filemind.scanner.file_scanner import FileScanner
 from filemind.services.archive_service import ArchiveService
@@ -28,7 +28,12 @@ def _json(data: dict[str, Any]) -> None:
 
 
 def _semantic_enabled() -> bool:
-    return os.environ.get("FILE_AGENT_SEMANTIC_INDEX", "1").lower() not in {"0", "false", "no"}
+    # FILEMIND_SEMANTIC_INDEX is canonical; FILE_AGENT_SEMANTIC_INDEX is the
+    # legacy name kept for backward compatibility.
+    value = os.environ.get("FILEMIND_SEMANTIC_INDEX") or os.environ.get(
+        "FILE_AGENT_SEMANTIC_INDEX", "1"
+    )
+    return value.lower() not in {"0", "false", "no"}
 
 
 def _parse_text(path: Path) -> str:
@@ -48,7 +53,7 @@ def _classify_path(target: str) -> dict[str, Any]:
             "results": [{"file_path": str(path), **classifier.classify_multi(path.name, text)}],
         }
     if path.is_dir():
-        config = FileAgentConfig.from_env()
+        config = FileMindConfig.from_env()
         files = FileRepository(config.db_path).list_files(directory=path, limit=1000)
         results = [
             {"file_path": item["file_path"], "file_name": item["file_name"], "category": item["category"]}
@@ -60,7 +65,7 @@ def _classify_path(target: str) -> dict[str, Any]:
 
 def _rename_plan(directory: str) -> dict[str, Any]:
     root = Path(directory).expanduser().resolve()
-    repo = FileRepository(FileAgentConfig.from_env().db_path)
+    repo = FileRepository(FileMindConfig.from_env().db_path)
     renamer = RenameService()
     plans: list[dict[str, Any]] = []
     for item in repo.list_files(directory=root, limit=1000):
@@ -79,7 +84,7 @@ def _rename_plan(directory: str) -> dict[str, Any]:
 
 def _archive_plan(source_dir: str, target_root: str) -> dict[str, Any]:
     root = Path(source_dir).expanduser().resolve()
-    repo = FileRepository(FileAgentConfig.from_env().db_path)
+    repo = FileRepository(FileMindConfig.from_env().db_path)
     archiver = ArchiveService()
     plans: list[dict[str, Any]] = []
     for item in repo.list_files(directory=root, limit=1000):
@@ -131,7 +136,7 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         if args.command == "scan":
-            config = FileAgentConfig.from_env()
+            config = FileMindConfig.from_env()
             result = FileScanner(config, semantic_index=_semantic_enabled()).scan(
                 args.directory,
                 recursive=not args.no_recursive,

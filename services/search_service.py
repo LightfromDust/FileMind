@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 from filemind.indexer.embedder import Embedder
 from filemind.indexer.vector_store import VectorStore
 from filemind.storage.chunk_repository import ChunkRepository
@@ -55,11 +55,11 @@ CATEGORY_BOOSTS = (
 class SearchService:
     def __init__(
         self,
-        config: FileAgentConfig | None = None,
+        config: FileMindConfig | None = None,
         db_path: str | Path | None = None,
         vector_index_path: str | Path | None = None,
     ):
-        self.config = config or FileAgentConfig()
+        self.config = config or FileMindConfig()
         self.db_path = db_path or self.config.db_path
         self.chunks = ChunkRepository(self.db_path)
         self.embedder = Embedder(self.config.embedding_model)

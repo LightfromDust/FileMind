@@ -97,11 +97,13 @@ filemind/
 
 | 环境变量 | 默认值 | 说明 |
 |----------|--------|------|
-| `FILE_AGENT_DB_PATH` | `~/.nanobot/file_agent/file_agent.db` | SQLite 数据库路径 |
-| `FILE_AGENT_VECTOR_INDEX_PATH` | `~/.nanobot/file_agent/faiss.index` | FAISS 索引路径 |
-| `FILE_AGENT_WORKSPACE_DIR` | `~/.nanobot/workspace` | 工作目录 |
-| `FILE_AGENT_EMBEDDING_MODEL` | `BAAI/bge-small-zh-v1.5` | 嵌入模型 |
-| `FILE_AGENT_SEMANTIC_INDEX` | `1` | 设为 `0` 禁用语义索引 |
+| `FILEMIND_DB_PATH` | `~/.filemind/filemind.db` | SQLite 数据库路径 |
+| `FILEMIND_VECTOR_INDEX_PATH` | `~/.filemind/faiss.index` | FAISS 索引路径 |
+| `FILEMIND_WORKSPACE_DIR` | `~/.filemind/workspace` | 工作目录 |
+| `FILEMIND_EMBEDDING_MODEL` | `BAAI/bge-small-zh-v1.5` | 嵌入模型 |
+| `FILEMIND_SEMANTIC_INDEX` | `1` | 设为 `0` 禁用语义索引 |
+
+> 兼容性:旧前缀 `FILE_AGENT_*`(如 `FILE_AGENT_DB_PATH`)仍然有效;当两个前缀同时设置时,`FILEMIND_*` 优先。
 
 ---
 

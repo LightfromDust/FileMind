@@ -6,12 +6,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from filemind.config import FileAgentConfig
+from filemind.config import FileMindConfig
 
 
 class VectorStore:
     def __init__(self, index_path: str | Path | None = None):
-        self.index_path = Path(index_path).expanduser() if index_path else FileAgentConfig().vector_index_path
+        self.index_path = Path(index_path).expanduser() if index_path else FileMindConfig().vector_index_path
         self.mapping_path = self.index_path.with_suffix(self.index_path.suffix + ".map.json")
         self._index = None
         self._mapping: list[int] = []
