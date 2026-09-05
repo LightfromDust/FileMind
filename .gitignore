@@ -9,3 +9,5 @@ __pycache__/
 dist/
 build/
 .venv/
+.pytest_cache/
+tests/_runtime/
