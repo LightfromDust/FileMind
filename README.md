@@ -59,8 +59,11 @@ python -m filemind archive-plan ~/Documents ~/Archive
 |------|--------|--------|
 | 纯文本 | 内置 | `.txt` `.md` `.csv` `.json` `.yaml` `.yml` |
 | 源代码 | 内置 | `.py` `.java` `.c` `.cpp` `.js` |
+| 图片 | 内置（尺寸 + PNG 嵌入文本；可选 Pillow EXIF / pytesseract OCR） | `.jpg` `.jpeg` `.png` `.bmp` `.webp` `.gif` |
 | PDF | PyMuPDF（可选） | `.pdf` |
 | Word 文档 | python-docx（可选） | `.docx` |
+
+> **图片说明**：图片解析不依赖任何可选库——文件名、尺寸（纯标准库解析）和 PNG 内嵌文本（tEXt/iTXt/zTXt）始终入索引，可被搜索和问答检索；安装 Pillow 后追加 EXIF（相机/时间），安装 pytesseract 后追加 OCR 全文。
 
 ---
 
@@ -69,7 +72,7 @@ python -m filemind archive-plan ~/Documents ~/Archive
 ```
 filemind/
 ├── scanner/        # 目录扫描与索引编排
-├── parser/         # 多格式文件解析（文本、代码、PDF、DOCX）
+├── parser/         # 多格式文件解析（文本、代码、图片、PDF、DOCX）
 ├── indexer/        # 语义分块、嵌入向量化、FAISS 向量存储
 ├── services/       # 核心逻辑：搜索、问答、摘要、分类、重命名、归档
 ├── storage/        # SQLite 仓库（files、chunks、operation_logs）
@@ -134,6 +137,7 @@ python -m pytest tests/ -v -s
 | `test_bench_incremental.py` | 1000 文件、每轮 5% 变更、三轮取中位数 | 增量比全量重建快 ≥ 2 倍（实测中位数降低 ~74%） |
 | `test_tool_chain.py` | 4 文件 × 6 步 | 扫描→搜索→问答→摘要→重命名→归档全部完成，dry-run 零改动 |
 | `test_path_guard.py` | 6 个攻击场景 | 越权路径、`..` 逃逸、词法前缀逃逸、系统目录均被拦截 |
+| `test_image_support.py` | 6 个用例（构造 PNG/JPEG） | 图片入索引不跳过；PNG 嵌入文本可搜索可问答；发票截图自动分类 |
 
 ---
 

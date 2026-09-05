@@ -22,6 +22,12 @@ DEFAULT_SUPPORTED_EXTENSIONS = {
     ".json",
     ".yaml",
     ".yml",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".bmp",
+    ".webp",
+    ".gif",
 }
 
 
